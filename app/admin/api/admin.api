@@ -1,0 +1,15 @@
+syntax = "v1"
+
+info (
+	title:          "后台项目"
+	version:        "2.5"
+	schemes:        "http"
+	host:           ""
+	wrapCodeMsg:    true
+	useDefinitions: true
+)
+
+import (
+	"demo.api"
+)
+

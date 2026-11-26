@@ -1,0 +1,92 @@
+syntax = "v1"
+
+info (
+	title:   "用户管理"
+	desc:    "用户管理"
+	version: "v1"
+)
+
+type (
+	UserAddReq {
+		Name  string `json:"name"` // 用户名
+		Phone string `json:"phone"` // 手机号
+		Age   int64  `json:"age"` // 年龄
+	}
+	UserAddResp  {}
+)
+
+type (
+	UserUpdateReq {
+		UserId int64  `json:"userId"` // 用户Id
+		Name   string `json:"name"` // 用户名
+		Phone  string `json:"phone"` // 手机号
+		Age    int64  `json:"age"` // 年龄
+	}
+	UserUpdateResp  {}
+)
+
+type (
+	UserDelReq {
+		UserId int64 `json:"userId"` // 用户Id
+	}
+	UserDelResp  {}
+)
+
+type (
+	UserInfoReq {
+		UserId int64 `form:"userId"` // 用户Id
+	}
+	UserInfoResp {
+		Name  string `json:"name"` // 用户名
+		Phone string `json:"phone"` // 手机号
+		Age   int64  `json:"age"` // 年龄
+	}
+)
+
+type (
+	UserListReq {
+		Name  string `form:"name,optional"` // 用户名
+		Phone string `form:"phone,optional"` // 手机号
+		Page  uint64 `form:"page,optional"`
+		Size  uint64 `form:"size,optional"`
+	}
+	UserListResp {
+		Total int64      `json:"total"` // 用户总数
+		List  []UserInfo `json:"list"` // 用户列表
+	}
+	UserInfo {
+		Name  string `json:"name"` // 用户名
+		Phone string `json:"phone"` // 手机号
+		Age   int64  `json:"age"` // 年龄
+	}
+)
+
+@server (
+	jwt:        Auth
+	prefix:     /v1
+	group:      demo
+	tags:       "接口文档示例"
+	middleware: AdminAuth
+)
+service admin-api {
+	@doc "新增用户"
+	@handler UserAdd
+	post /user/add (UserAddReq) returns (UserAddResp)
+
+	@doc "修改用户"
+	@handler UserUpdate
+	post /user/update (UserUpdateReq) returns (UserUpdateResp)
+
+	@doc "删除用户"
+	@handler UserDel
+	post /user/del (UserDelReq) returns (UserDelResp)
+
+	@doc "用户信息"
+	@handler UserInfo
+	get /user/info (UserInfoReq) returns (UserInfoResp)
+
+	@doc "用户列表"
+	@handler UserList
+	get /user/list (UserListReq) returns (UserListResp)
+}
+

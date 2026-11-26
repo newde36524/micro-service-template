@@ -1,0 +1,8 @@
+Name: client-api
+Host: 0.0.0.0
+Port: 9002
+
+Auth:
+  AccessSecret: 550e8400-e29b-41d4-a716-446655440000
+  #  15天
+  AccessExpire: 1296000

@@ -1,0 +1,27 @@
+syntax = "v1"
+
+info (
+	title:   "hello world"
+	desc:    "hello world"
+	version: "v1"
+)
+
+type (
+	HelloWorldReq  {}
+	HelloWorldResp {
+		Msg string `json:"msg"` // 返回信息
+	}
+)
+
+@server (
+	// jwt:    Auth
+	prefix: /v1
+	group:  demo
+	tags:   "接口文档示例"
+)
+service client-api {
+	@doc "hello world"
+	@handler HelloWorld
+	get /helloworld (HelloWorldReq) returns (HelloWorldResp)
+}
+
