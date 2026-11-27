@@ -20,6 +20,9 @@ services:
     environment:
       - KAFKA_CREATE_TOPICS="kuaima-log:1:1"
       - KAFKA_ADVERTISED_HOST_NAME=kafka
+      # 未设置 KAFKA_ADVERTISED_PORT 时脚本会生成空的 advertised.port 导致启动失败
+      # When KAFKA_ADVERTISED_PORT is not set, the script generates empty advertised.port causing startup failure
+      - KAFKA_ADVERTISED_PORT=9092
       - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
       - KAFKA_AUTO_CREATE_TOPICS_ENABLE=false
       - TZ=Asia/Shanghai
@@ -35,9 +38,9 @@ services:
     environment:
       TZ: Asia/Shanghai
       # root 密码 - root password
-      MYSQL_ROOT_PASSWORD: 2cb8650891fb
+      MYSQL_ROOT_PASSWORD: abc123456
     ports:
-      - "33069:3306"
+      - "13306:3306"
     volumes:
       # 数据挂载 - Data mounting
       - ./data/mysql/data:/var/lib/mysql
@@ -72,6 +75,9 @@ services:
   #asynqmon asynq延迟队列、定时队列的webui - Asynqmon asynq delay queue, timing queue's webUI
   asynqmon:
     image: hibiken/asynqmon:latest
+    # hibiken/asynqmon 仅提供 amd64 镜像，Apple Silicon 需通过仿真运行
+    # hibiken/asynqmon only provides amd64 image, need emulation on Apple Silicon
+    platform: linux/amd64
     container_name: asynqmon
     ports:
       - "8980:8080"
